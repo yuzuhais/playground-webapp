@@ -8,10 +8,11 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^2.1.1",
     "@chakra-ui/react": "^2.3.6",
-    "@emotion/react": "^11.10.4",
+    "@emotion/cache": "^11.11.0",
+    "@emotion/react": "^11.11.1",
     "@emotion/server": "^11.10.0",
-    "@emotion/styled": "^11.10.4",
     "@remix-run/node": "^1.19.3",
     "@remix-run/react": "^1.19.3",
     "@remix-run/serve": "^1.19.3",

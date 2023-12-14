@@ -1,4 +1,4 @@
-import { ChakraProvider, Box, Heading } from "@chakra-ui/react";
+import { ChakraProvider, Box, Heading, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Flex, Grid, GridItem, Stack, VStack } from "@chakra-ui/react";
 import type { MetaFunction } from "@remix-run/node";
 import {
   Links,
@@ -9,6 +9,9 @@ import {
   ScrollRestoration,
   useCatch,
 } from "@remix-run/react";
+import { AddIcon, MinusIcon } from "@chakra-ui/icons";
+import { Button, ButtonGroup } from '@chakra-ui/react'
+import CircularProgressBar from './circularProgressBar'
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
@@ -45,7 +48,35 @@ export default function App() {
   return (
     <Document>
       <ChakraProvider>
-        <Outlet />
+        <Box>
+        <VStack>
+          <Flex minHeight="22vh" minWidth="100vh" justifyContent='center' alignItems='center'>
+            <Heading fill="White" stroke="White" fontWeight='extrabold' fontSize='5xl'>
+            ⏱ CHAKURA-UI Timer ⏱
+            </Heading>
+          </Flex>
+          <Box>
+            <Flex minHeight="50vh" align='center' gap='24'>
+              <Box>
+              <ButtonGroup gap='2'>
+                <Button height='100px' width='200px' fontSize='48px' ring="4px" ringColor="blue.200" ringOffset="3px" ringOffsetColor="blue.300">Start</Button>
+                <Button height='100px' width='200px' fontSize='48px'>Stop</Button>
+              </ButtonGroup>
+              </Box>
+              <Box>
+                <CircularProgressBar selectedValue={25}
+                                     maxValue={50}
+                                     strokeWidth={100}
+                                     activeStrokeColor='#0f4fff'
+                                     labelFontSize={164}
+                                     valueFontSize={72}
+                                     withGradient
+                                     radius={260}/>
+              </Box>
+            </Flex>
+          </Box>
+        </VStack>
+      </Box>
       </ChakraProvider>
     </Document>
   );
