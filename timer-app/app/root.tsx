@@ -12,6 +12,8 @@ import {
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import { Button, ButtonGroup } from '@chakra-ui/react'
 import CircularProgressBar from './circularProgressBar'
+import { useMediaQuery } from 'react-responsive'
+
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
@@ -42,8 +44,38 @@ function Document({
   );
 }
 
+type timerProps = {
+  isDesktopOrLaptop: boolean,
+}
+
+function Timer(props: timerProps) {
+  const isDesktopOrLaptop = props.isDesktopOrLaptop;
+  if (isDesktopOrLaptop) {
+    return <CircularProgressBar selectedValue={25}
+      maxValue={50}
+      strokeWidth={100}
+      activeStrokeColor='#0f4fff'
+      labelFontSize={164}
+      valueFontSize={72}
+      withGradient
+      radius={260}/>;
+    }
+
+  return <CircularProgressBar selectedValue={25}
+    maxValue={50}
+    strokeWidth={60}
+    activeStrokeColor='#0f4fff'
+    labelFontSize={164}
+    valueFontSize={48}
+    withGradient
+    radius={160}/>;
+}
+
 export default function App() {
   // throw new Error("💣💥 Booooom");
+  const isDesktopOrLaptop = useMediaQuery({query: '(min-width: 1224px)'})
+  const isBigScreen = useMediaQuery({ query: '(min-width: 1824px)' })
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' })
 
   return (
     <Document>
@@ -51,27 +83,20 @@ export default function App() {
         <Box>
         <VStack>
           <Flex minHeight="22vh" minWidth="100vh" justifyContent='center' alignItems='center'>
-            <Heading fill="White" stroke="White" fontWeight='extrabold' fontSize='5xl'>
+            <Heading fill="White" stroke="White" fontWeight='extrabold' fontSize={['2xl', '2xl', '5xl']}>
             ⏱ CHAKURA-UI Timer ⏱
             </Heading>
           </Flex>
           <Box>
-            <Flex minHeight="50vh" align='center' gap='24'>
-              <Box>
+            <Flex direction={['column', 'column', 'column','row']} minHeight="50vh" align='center' gap='24'>
+              <Box order={[2, 2, 2, 1]}>
               <ButtonGroup gap='2'>
-                <Button height='100px' width='200px' fontSize='48px' ring="4px" ringColor="blue.200" ringOffset="3px" ringOffsetColor="blue.300">Start</Button>
-                <Button height='100px' width='200px' fontSize='48px'>Stop</Button>
+                <Button height={['50px', '100px']} width={['100px', '200px']} fontSize={['24px', '48px']} ring="4px" ringColor="blue.200" ringOffset="3px" ringOffsetColor="blue.300">Start</Button>
+                <Button height={['50px', '100px']}  width={['100px', '200px']} fontSize={['24px', '48px']}>Stop</Button>
               </ButtonGroup>
               </Box>
-              <Box>
-                <CircularProgressBar selectedValue={25}
-                                     maxValue={50}
-                                     strokeWidth={100}
-                                     activeStrokeColor='#0f4fff'
-                                     labelFontSize={164}
-                                     valueFontSize={72}
-                                     withGradient
-                                     radius={260}/>
+              <Box order={[1, 1, 1, 2]}>
+                <Timer isDesktopOrLaptop={isDesktopOrLaptop}/>
               </Box>
             </Flex>
           </Box>
