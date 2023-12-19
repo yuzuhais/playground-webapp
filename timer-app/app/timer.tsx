@@ -37,14 +37,14 @@ export class TimerLogic {
   timeCounter: number = 0;
   isActive: boolean = false;
   countTime: number = 1;
-  preCallbackOfCount: (count: number)=>void = ()=>{};
-  preCallbackOfStart: ()=>void = ()=>{};
-  preCallbackOfFinish: ()=>void = ()=>{};
+  callEveryCount: (count: number)=>void = ()=>{};
+  callBeforeStart: ()=>void = ()=>{};
+  callBeforeFinish: ()=>void = ()=>{};
 
-  setCallbacks(preCallbackOfCount: (count: number)=>void,  preCallbackOfStart: ()=>void, preCallbackOfFinish: ()=>void) {
-    this.preCallbackOfCount = preCallbackOfCount;
-    this.preCallbackOfStart = preCallbackOfStart;
-    this.preCallbackOfFinish = preCallbackOfFinish;
+  setCallbacks(callEveryCount: (count: number)=>void,  callBeforeStart: ()=>void, callBeforeFinish: ()=>void) {
+    this.callEveryCount = callEveryCount;
+    this.callBeforeStart = callBeforeStart;
+    this.callBeforeFinish = callBeforeFinish;
   }
 
   set(countTime: number) {
@@ -61,14 +61,17 @@ export class TimerLogic {
     if (0 >= this.timeCounter || this.isActive) {
       return;
     }
-    this.preCallbackOfStart();
+    this.callBeforeStart();
 
     this.isActive = true;
+    this.count();
+  }
 
+  async count() {
     while(this.isActive) {
       DEBUG("[start] loop start", this.timeCounter);
-      this.timeCounter -= 1000; //preCallbackOfCountの前にあることに納得はしていない
-      this.preCallbackOfCount(this.timeCounter);
+      this.timeCounter -= 1000;
+      this.callEveryCount(this.timeCounter);
 
 
       await wait(1000);
@@ -91,6 +94,6 @@ export class TimerLogic {
   }
 
   onFinish() {
-    this.preCallbackOfFinish();
+    this.callBeforeFinish();
   }
 }
