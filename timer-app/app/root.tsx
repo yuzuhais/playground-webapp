@@ -11,7 +11,7 @@ import {
 } from "@remix-run/react";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import { Button, ButtonGroup } from '@chakra-ui/react'
-import { useOnMobile, useOnLargeDisplay } from "./responsiveFlag";
+import { watchSizeOfDisplay, Breakpoints } from "./responsiveFlag";
 import { useRef, useState } from "react";
 import { TimerComponent, TimerLogic } from "./timer"
 
@@ -56,8 +56,7 @@ var timer = new TimerLogic();
 export default function App() {
   // throw new Error("💣💥 Booooom");
 
-  const isUsedOnMobile = useOnMobile();
-  const isUsedOnLargeDisplay = useOnLargeDisplay();
+  const isLargeDisplay = Breakpoints.lg < watchSizeOfDisplay();
   const measurementTime = useRef<HTMLInputElement>(null);
   const [isInitialState, setInitialStateFlag] = useState(true);
   const [isStarted, setStartedFlag] = useState(false);
@@ -135,7 +134,7 @@ export default function App() {
                 <TimerComponent 
                   text={new Date(remainingTime).toISOString().slice(11, 19) } 
                   percentage={ 100 * timer.timeCounter / timer.countTime } 
-                  isMobile={isUsedOnMobile} isLargeDisplay={isUsedOnLargeDisplay}/>
+                  isLargeDisplay={isLargeDisplay}/>
               </Box>
             </Flex>
           </Box>

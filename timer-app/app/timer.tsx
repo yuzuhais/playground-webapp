@@ -6,13 +6,12 @@ const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 type timerProps = {
   text: string,
   percentage: number,
-  isMobile: boolean,
   isLargeDisplay: boolean,
 }
 
-export function TimerComponent({ text, percentage, isMobile, isLargeDisplay }: timerProps) {
+export function TimerComponent({ text, percentage, isLargeDisplay }: timerProps) {
   
-  if (isMobile || isLargeDisplay) {
+  if (!isLargeDisplay) {
 
     return <CircularProgressBar mainText={text} selectedValue={ percentage }
       maxValue={100}
@@ -23,7 +22,7 @@ export function TimerComponent({ text, percentage, isMobile, isLargeDisplay }: t
       withGradient
       radius={160}/>;
     }
-    
+
     return <CircularProgressBar mainText={text} selectedValue={ percentage }
       maxValue={100}
       strokeWidth={100}
