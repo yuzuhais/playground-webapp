@@ -4,7 +4,7 @@ const useOnMobile = () => {
   const [isMobile, setIsMobile] = useState(true);
 
   const resizeCallback = () => {
-    if (window.innerWidth < 768) {
+    if (window.innerWidth <= 768) {
       setIsMobile(true);
     } else {
       setIsMobile(false);
@@ -12,7 +12,7 @@ const useOnMobile = () => {
   };
 
   useLayoutEffect(() => {
-    if (window.innerWidth > 767) {
+    if (window.innerWidth > 768) {
       setIsMobile(false);
     }
 

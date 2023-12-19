@@ -29,6 +29,7 @@ const Direction = {
 };
 
 type Props = {
+    mainText: string
     maxValue: number,
     selectedValue: number,
     radius: number,
@@ -46,6 +47,7 @@ type Props = {
 };
 
 const CircularProgressBar = ({
+    mainText, 
     maxValue,
     selectedValue,
     radius,
@@ -142,7 +144,7 @@ const CircularProgressBar = ({
                 y={textValueY}
                 textAnchor="middle"
             >
-                {selectedValue*2}
+                {mainText}
             </text>
             {!!label.length && labelView}
         </svg>
