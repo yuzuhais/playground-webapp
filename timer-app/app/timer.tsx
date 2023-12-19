@@ -7,11 +7,12 @@ type timerProps = {
   text: string,
   percentage: number,
   isMobile: boolean,
+  isLargeDisplay: boolean,
 }
 
-export function TimerComponent({ text, percentage, isMobile }: timerProps) {
+export function TimerComponent({ text, percentage, isMobile, isLargeDisplay }: timerProps) {
   
-  if (isMobile) {
+  if (isMobile || isLargeDisplay) {
 
     return <CircularProgressBar mainText={text} selectedValue={ percentage }
       maxValue={100}

@@ -11,7 +11,7 @@ import {
 } from "@remix-run/react";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import { Button, ButtonGroup } from '@chakra-ui/react'
-import useOnMobile from "./useOnMobile";
+import { useOnMobile, useOnLargeDisplay } from "./responsiveFlag";
 import { useRef, useState } from "react";
 import { TimerComponent, TimerLogic } from "./timer"
 
@@ -57,6 +57,7 @@ export default function App() {
   // throw new Error("💣💥 Booooom");
 
   const isUsedOnMobile = useOnMobile();
+  const isUsedOnLargeDisplay = useOnLargeDisplay();
   const measurementTime = useRef<HTMLInputElement>(null);
   const [isInitialState, setInitialStateFlag] = useState(true);
   const [isStarted, setStartedFlag] = useState(false);
@@ -98,7 +99,7 @@ export default function App() {
         <Box>
         <VStack>
           <Flex minHeight="22vh" minWidth="100vh" justifyContent='center' alignItems='center'>
-            <Heading fill="White" stroke="White" fontWeight='extrabold' fontSize={['2xl', '2xl', '5xl']}>
+            <Heading fill="White" stroke="White" fontWeight='extrabold' fontSize={['2xl', '3xl', '5xl']}>
             ⏱ CHAKURA-UI Timer ⏱
             </Heading>
           </Flex>
@@ -134,7 +135,7 @@ export default function App() {
                 <TimerComponent 
                   text={new Date(remainingTime).toISOString().slice(11, 19) } 
                   percentage={ 100 * timer.timeCounter / timer.countTime } 
-                  isMobile={isUsedOnMobile}/>
+                  isMobile={isUsedOnMobile} isLargeDisplay={isUsedOnLargeDisplay}/>
               </Box>
             </Flex>
           </Box>
