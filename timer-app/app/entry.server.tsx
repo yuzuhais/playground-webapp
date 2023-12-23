@@ -4,7 +4,7 @@ import createEmotionCache from "@emotion/cache";
 import { CacheProvider as EmotionCacheProvider } from "@emotion/react";
 import createEmotionServer from "@emotion/server/create-instance";
 import type { AppLoadContext, EntryContext } from "@remix-run/node";
-import { Response } from "@remix-run/node";
+import { Response } from "@remix-run/web-fetch";
 import { RemixServer } from "@remix-run/react";
 import isbot from "isbot";
 import { renderToPipeableStream } from "react-dom/server";

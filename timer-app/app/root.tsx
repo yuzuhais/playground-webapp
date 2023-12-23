@@ -7,13 +7,9 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useCatch,
+  useRouteError,
+  isRouteErrorResponse,
 } from "@remix-run/react";
-
-export const meta: MetaFunction = () => ({
-  charset: "utf-8",
-  viewport: "width=device-width,initial-scale=1",
-});
 
 function Document({
   children,
@@ -50,35 +46,29 @@ export default function App() {
     </Document>
   );
 }
+export function ErrorBoundary() {
+  const error = useRouteError();
 
-// How ChakraProvider should be used on CatchBoundary
-export function CatchBoundary() {
-  const caught = useCatch();
+  // when true, this is what used to go to `CatchBoundary`
+  if (isRouteErrorResponse(error)) {
+    return (
+      <div>
+        <h1>Oops</h1>
+        <p>Status: {error.status}</p>
+        <p>{error.data.message}</p>
+      </div>
+    );
+  }
+
+  // Don't forget to typecheck with your own logic.
+  // Any value can be thrown, not just errors!
+  let errorMessage = "Unknown error";
 
   return (
-    <Document title={`${caught.status} ${caught.statusText}`}>
-      <ChakraProvider>
-        <Box>
-          <Heading as="h1" bg="purple.600">
-            [CatchBoundary]: {caught.status} {caught.statusText}
-          </Heading>
-        </Box>
-      </ChakraProvider>
-    </Document>
-  );
-}
-
-// How ChakraProvider should be used on ErrorBoundary
-export function ErrorBoundary({ error }: { error: Error }) {
-  return (
-    <Document title="Error!">
-      <ChakraProvider>
-        <Box>
-          <Heading as="h1" bg="blue.500">
-            [ErrorBoundary]: There was an error: {error.message}
-          </Heading>
-        </Box>
-      </ChakraProvider>
-    </Document>
+    <div>
+      <h1>Uh oh ...</h1>
+      <p>Something went wrong.</p>
+      <pre>{errorMessage}</pre>
+    </div>
   );
 }
