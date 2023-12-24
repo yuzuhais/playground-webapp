@@ -38,12 +38,18 @@ export class TimerLogic {
   isActive: boolean = false;
   countTime: number = 1;
   callEveryCount: (count: number)=>void = ()=>{};
-  callBeforeStart: ()=>void = ()=>{};
-  callBeforeFinish: ()=>void = ()=>{};
+  callBeforeStart: (count: number)=>void = ()=>{};
+  callBeforeStop: (count: number)=>void = ()=>{};
+  callBeforeFinish: (count: number)=>void = ()=>{};
 
-  setCallbacks(callEveryCount: (count: number)=>void,  callBeforeStart: ()=>void, callBeforeFinish: ()=>void) {
+  setCallbacks(callEveryCount: (count: number)=>void,  
+               callBeforeStart: (count: number)=>void, 
+               callBeforeStop: (count: number)=>void, 
+               callBeforeFinish: (count: number)=>void) {
+
     this.callEveryCount = callEveryCount;
     this.callBeforeStart = callBeforeStart;
+    this.callBeforeStop = callBeforeStop;
     this.callBeforeFinish = callBeforeFinish;
   }
 
@@ -61,7 +67,7 @@ export class TimerLogic {
     if (0 >= this.timeCounter || this.isActive) {
       return;
     }
-    this.callBeforeStart();
+    this.callBeforeStart(this.timeCounter);
 
     this.isActive = true;
     this.count();
@@ -89,11 +95,11 @@ export class TimerLogic {
     if (!this.isActive) {
       return;
     }
-
+    this.callBeforeStop(this.timeCounter);
     this.isActive = false;
   }
 
   onFinish() {
-    this.callBeforeFinish();
+    this.callBeforeFinish(this.timeCounter);
   }
 }

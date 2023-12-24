@@ -2,18 +2,27 @@ import { Box, Heading, Accordion, AccordionItem, AccordionButton, AccordionPanel
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import { Button, ButtonGroup } from '@chakra-ui/react'
 import { watchSizeOfDisplay, Breakpoints } from "../responsiveFlag";
-import { useRef, useState } from "react";
+import { RefObject, useEffect, useRef, useState, Dispatch, SetStateAction } from "react";
 import { TimerComponent, TimerLogic } from "../timer"
 
 var timer = new TimerLogic();
 
-export default function Index() {
+interface Message {
+  supervisorID: string;
+  state: string;
+  remainingTime: string;
+}
+
+
+const clientDisplay = (es: EventSource | null, message: string, setMessage: Dispatch<SetStateAction<string>>) => {
   const isLargeDisplay = Breakpoints.lg < watchSizeOfDisplay();
   const measurementTime = useRef<HTMLInputElement>(null);
   const [isInitialState, setInitialStateFlag] = useState(true);
   const [isStarted, setStartedFlag] = useState(false);
   const [isStopped, setStoppedFlag] = useState(true);
   const [remainingTime, setRemainingTime] = useState(timer.timeCounter);
+  console.log("message", message);
+  
 
   const start = () => {
     setStartedFlag(true);
@@ -41,11 +50,11 @@ export default function Index() {
     setRemainingTime(0);
     setInitialStateFlag(true);
   }
-  
+
   timer.setCallbacks(
     (count: number)=>{ setRemainingTime(count); }, 
-    (count: number)=>{ fetch(`/api/v1/notify/time/supervisor001/start/${count}`, { method: 'POST' }); }, 
-    (count: number)=>{ fetch(`/api/v1/notify/time/supervisor001/stop/${count}`, { method: 'POST' }); },
+    (count: number)=>{ }, 
+    (count: number)=>{ },
     (count: number)=>{ stop(); resetTimer(); }
   );
   
@@ -57,34 +66,31 @@ export default function Index() {
         ⏱ CHAKURA-UI Timer ⏱
         </Heading>
       </Flex>
+      <Button onClick={()=>{
+        es = new EventSource('/api/v1/notify/time/supervisor001');
+        console.log("subscribe");
+        es.onmessage = ({data}) => {
+          let message: Message = JSON.parse(data);
+          let remainingTime: number = parseInt(message.remainingTime);
+          if ("start" == message.state) {
+
+            setRemainingTime(remainingTime);
+            setInitialStateFlag(false);
+            timer.set(remainingTime);
+            start();
+            return;
+          } 
+          if ("stop" == message.state) {
+            setRemainingTime(parseInt(message.remainingTime));
+            stop();
+            return;
+          }
+        }
+      }}>Subscribe</Button>
+  <Button onClick={()=>{console.log(message);}}>show message</Button>
       <Box>
         <Flex direction={['column', 'column', 'column','row']} minHeight="50vh" align='center' gap='24'>
-          <Box order={[2, 2, 2, 1]}>
-          <VStack>
-            <InputGroup size={ ["md", "lg"] }>
-              <Input
-               isDisabled = { !isInitialState }
-               placeholder="Select Date and Time"
-               size={ ["md", "lg"] }
-               type="time"
-               step="1"
-               ref={measurementTime}
-              />
-              <InputRightElement width='4.5rem'>
-                { isInitialState &&  <Button onClick={setTimer}  size={ ["sm", "md"] }>
-                  SET
-                </Button> }
-                { !isInitialState &&  <Button onClick={resetTimer}  mr="1"  size={ ["sm", "md"] }>
-                  RESET
-                </Button> }
-              </InputRightElement>
-            </InputGroup>
-            <HStack gap='2'>
-              <Button onClick={ start } isDisabled={ isStarted || isInitialState } height={['50px', '100px']} width={['100px', '200px']} fontSize={['24px', '48px']} ring="4px" ringColor="blue.200" ringOffset="3px" ringOffsetColor="blue.300">Start</Button>
-              <Button onClick={ stop } isDisabled={ isStopped || isInitialState } height={['50px', '100px']}  width={['100px', '200px']} fontSize={['24px', '48px']}>Stop</Button>
-            </HStack>
-          </VStack>
-          </Box>
+
           <Box order={[1, 1, 1, 2]}>
             <TimerComponent 
               text={new Date(remainingTime).toISOString().slice(11, 19) } 
@@ -96,4 +102,12 @@ export default function Index() {
     </VStack>
   </Box>
   );
+}
+
+export default function Index() {
+  
+  const es: EventSource | null = null;
+  const [message, setMessage] = useState("");
+
+  return clientDisplay(es, message, setMessage);
 }

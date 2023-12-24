@@ -62,13 +62,13 @@ export function ErrorBoundary() {
 
   // Don't forget to typecheck with your own logic.
   // Any value can be thrown, not just errors!
-  let errorMessage = "Unknown error";
+  let errorMessage = `${error}`;
 
   return (
     <div>
       <h1>Uh oh ...</h1>
       <p>Something went wrong.</p>
-      <pre>{errorMessage}</pre>
+      <pre>errorMessage</pre>
     </div>
   );
 }
