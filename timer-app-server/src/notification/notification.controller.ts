@@ -6,6 +6,7 @@ class NotificationPayload {
   supervisorID: string;
   state: string;
   remainingTime: string;
+  mesurementTime: string;
 
   constructor(init?: Partial<NotificationPayload>) {
     Object.assign(this, init);
@@ -29,9 +30,9 @@ export class NotificationController {
     );
   }
 
-  @Post('time/:supervisorID/:state/:time')
-  emit(@Param("supervisorID") supervisorID: string, @Param("state") state: string, @Param("time") time: string) {
-    this.eventEmitter.emit(supervisorID, new NotificationPayload({ supervisorID: supervisorID, state: state, remainingTime: time }));
+  @Post('time/:supervisorID/:state/:remainingTime/:mesurementTime')
+  emit(@Param("supervisorID") supervisorID: string, @Param("state") state: string, @Param("remainingTime") remainingTime: string, @Param("mesurementTime") mesurementTime: string) {
+    this.eventEmitter.emit(supervisorID, new NotificationPayload({ supervisorID: supervisorID, state: state, remainingTime: remainingTime, mesurementTime: mesurementTime}));
     return {result: 'ok'};
   }
 }
