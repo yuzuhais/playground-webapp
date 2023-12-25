@@ -22,8 +22,8 @@ export default function Index() {
   const [hasAvailableID, setIdAvailabilityFlag] = useState(false);
 
   const handleInputChange = (e: { target: { value: SetStateAction<string>; }; }) => {
-    setInput(e.target.value)
-    if ("" == e.target.value.toString().trim()) {
+    const id = e.target.value.toString().trim();
+    if ("" == id) {
       console.log("unavailable id");
       setErrorFlag(true);
       setIdAvailabilityFlag(false);
@@ -31,6 +31,7 @@ export default function Index() {
       console.log("available id");
       setErrorFlag(false);
       setIdAvailabilityFlag(true);
+      setInput(id);
     }
   }
 

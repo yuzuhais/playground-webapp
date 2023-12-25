@@ -31,13 +31,14 @@ const clientDisplay = (es: MutableRefObject<EventSource | null>) => {
 
 
   const handleInputChange = (e: { target: { value: SetStateAction<string>; }; }) => {
-    setInput(e.target.value)
-    if ("" == e.target.value.toString().trim()) {
+    const id = e.target.value.toString().trim();
+    if ("" == id) {
       setErrorFlag(true);
       setIdAvailabilityFlag(false);
     } else {
       setErrorFlag(false);
       setIdAvailabilityFlag(true);
+      setInput(id);
     }
   }
   
@@ -67,9 +68,8 @@ const clientDisplay = (es: MutableRefObject<EventSource | null>) => {
   );
 
   const subscribe = ()=>{
-    console.log(`/api/v1/notify/time/${input}`);
     setSubscriptionFlag(true);
-    es.current = new EventSource(`/api/v1/notify/time/${input}`);
+    es.current = new EventSource(`/api/v1/notify/time/${input.trim()}`);
     es.current.onmessage = ({data}) => {
       let message: Message = JSON.parse(data);
       let remainingTime: number = parseInt(message.remainingTime);
