@@ -1,4 +1,17 @@
+import { Box } from '@chakra-ui/react';
 import CircularProgressBar from './circularProgressBar'
+
+const circularBackpanel = {
+  borderRadius: "160px",
+  background: "#EBECF0",
+  boxShadow: "5px 5px 20px #c8c9cc, -5px -5px 20px #ffffff"
+}
+
+const circularExtraLargeBackpanel = {
+  borderRadius: "260px",
+  background: "#EBECF0",
+  boxShadow: "5px 5px 20px #c8c9cc, -5px -5px 20px #ffffff"
+}
 
 const DEBUG = console.log;
 const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
@@ -13,24 +26,24 @@ export function TimerComponent({ text, percentage, isLargeDisplay }: timerProps)
   
   if (!isLargeDisplay) {
 
-    return <CircularProgressBar mainText={text} selectedValue={ percentage }
+    return <Box style={circularBackpanel}><CircularProgressBar mainText={text} selectedValue={ percentage }
       maxValue={100}
       strokeWidth={60}
       activeStrokeColor='#0f4fff'
       labelFontSize={164}
       valueFontSize={48}
       withGradient
-      radius={160}/>;
+      radius={160}/></Box>;
     }
 
-    return <CircularProgressBar mainText={text} selectedValue={ percentage }
+    return <Box style={circularExtraLargeBackpanel}><CircularProgressBar mainText={text} selectedValue={ percentage }
       maxValue={100}
       strokeWidth={100}
       activeStrokeColor='#0f4fff'
       labelFontSize={164}
       valueFontSize={72}
       withGradient
-      radius={260}/>;
+      radius={260}/></Box>;
 }
 
 export class TimerLogic {

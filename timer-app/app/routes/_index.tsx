@@ -4,6 +4,7 @@ import { Button, ButtonGroup } from '@chakra-ui/react'
 import { watchSizeOfDisplay, Breakpoints } from "../responsiveFlag";
 import { SetStateAction, useRef, useState } from "react";
 import { TimerComponent, TimerLogic } from "../timer"
+import { BackPanelStyle } from "../styles"
 
 var timer = new TimerLogic();
 
@@ -68,15 +69,15 @@ export default function Index() {
   );
   
   return (
-    <Box>
+    <Box background="linear-gradient(135deg, #0a81ff, #0800ff)" height="100vh">
     <VStack>
       <Flex minHeight="22vh" minWidth="100vh" justifyContent='center' alignItems='center'>
-        <Heading fill="White" stroke="White" fontWeight='extrabold' fontSize={['2xl', '3xl', '5xl']}>
-        ⏱ CHAKURA-UI Timer ⏱
+        <Heading fill="White" stroke="White" fontWeight='extrabold' fontSize={['2xl', '3xl', '5xl']} color="#0800ff" textShadow="0px 1px 1px #0a81ff, 0px -1px 1px  #0a81ff">
+         CHAKURA-UI Timer 
         </Heading>
       </Flex>
       <Box>
-        <Flex direction={['column', 'column', 'column','row']} minHeight="50vh" align='center' gap={['8','8','8',]}>
+        <Flex style={BackPanelStyle} direction={['column', 'column', 'column','row']} minHeight="50vh" align='center' gap={['8','8','8',]}>
           <Box order={[2, 2, 2, 1]}>
           <VStack>
             <FormControl isInvalid={isError}>
