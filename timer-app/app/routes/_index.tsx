@@ -1,8 +1,8 @@
-import { Box, Heading, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Flex, Grid, GridItem, Stack, VStack, Input, InputGroup, InputRightElement, HStack } from "@chakra-ui/react";
+import { Box, Heading, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Flex, Grid, GridItem, Stack, VStack, Input, InputGroup, InputRightElement, HStack, FormControl, FormLabel, FormHelperText, FormErrorMessage } from "@chakra-ui/react";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import { Button, ButtonGroup } from '@chakra-ui/react'
 import { watchSizeOfDisplay, Breakpoints } from "../responsiveFlag";
-import { useRef, useState } from "react";
+import { SetStateAction, useRef, useState } from "react";
 import { TimerComponent, TimerLogic } from "../timer"
 
 var timer = new TimerLogic();
@@ -10,10 +10,28 @@ var timer = new TimerLogic();
 export default function Index() {
   const isLargeDisplay = Breakpoints.lg < watchSizeOfDisplay();
   const measurementTime = useRef<HTMLInputElement>(null);
+  const supervisorID = useRef<HTMLInputElement>(null);
   const [isInitialState, setInitialStateFlag] = useState(true);
   const [isStarted, setStartedFlag] = useState(false);
   const [isStopped, setStoppedFlag] = useState(true);
   const [remainingTime, setRemainingTime] = useState(timer.timeCounter);
+  
+  const [input, setInput] = useState('');
+  const [isError, setErrorFlag] = useState(false);
+  const [hasAvailableID, setIdAvailabilityFlag] = useState(false);
+
+  const handleInputChange = (e: { target: { value: SetStateAction<string>; }; }) => {
+    setInput(e.target.value)
+    if ("" == e.target.value.toString().trim()) {
+      console.log("unavailable id");
+      setErrorFlag(true);
+      setIdAvailabilityFlag(false);
+    } else {
+      console.log("available id");
+      setErrorFlag(false);
+      setIdAvailabilityFlag(true);
+    }
+  }
 
   const start = () => {
     setStartedFlag(true);
@@ -43,10 +61,10 @@ export default function Index() {
   }
   
   timer.setCallbacks(
-    (count: number)=>{ setRemainingTime(count); }, 
-    (count: number)=>{ fetch(`/api/v1/notify/time/supervisor001/start/${count}`, { method: 'POST' }); }, 
-    (count: number)=>{ fetch(`/api/v1/notify/time/supervisor001/stop/${count}`, { method: 'POST' }); },
-    (count: number)=>{ stop(); resetTimer(); }
+    ()=>{ setRemainingTime(timer.timeCounter); }, 
+    ()=>{ fetch(`/api/v1/notify/time/${input}/start/${timer.timeCounter}/${timer.measurementTime}`, { method: 'POST' }); }, 
+    ()=>{ fetch(`/api/v1/notify/time/${input}/stop/${timer.timeCounter}/${timer.measurementTime}`, { method: 'POST' }); },
+    ()=>{ stop(); resetTimer(); }
   );
   
   return (
@@ -58,12 +76,16 @@ export default function Index() {
         </Heading>
       </Flex>
       <Box>
-        <Flex direction={['column', 'column', 'column','row']} minHeight="50vh" align='center' gap='24'>
+        <Flex direction={['column', 'column', 'column','row']} minHeight="50vh" align='center' gap={['8','8','8',]}>
           <Box order={[2, 2, 2, 1]}>
           <VStack>
+            <FormControl isInvalid={isError}>
+              <Input type='text' value={input} onChange={handleInputChange} size={ ["md", "lg"] } placeholder="supervisor001"/>
+              {isError && <FormErrorMessage>空文字列もしくはスペースのみからなる文字列は受け付られません。</FormErrorMessage>}
+            </FormControl>
             <InputGroup size={ ["md", "lg"] }>
               <Input
-               isDisabled = { !isInitialState }
+               isDisabled = { !isInitialState || !hasAvailableID }
                placeholder="Select Date and Time"
                size={ ["md", "lg"] }
                type="time"
@@ -88,7 +110,7 @@ export default function Index() {
           <Box order={[1, 1, 1, 2]}>
             <TimerComponent 
               text={new Date(remainingTime).toISOString().slice(11, 19) } 
-              percentage={ 100 * timer.timeCounter / timer.countTime } 
+              percentage={ 100 * timer.timeCounter / timer.measurementTime } 
               isLargeDisplay={isLargeDisplay}/>
           </Box>
         </Flex>

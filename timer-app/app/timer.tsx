@@ -36,16 +36,16 @@ export function TimerComponent({ text, percentage, isLargeDisplay }: timerProps)
 export class TimerLogic {
   timeCounter: number = 0;
   isActive: boolean = false;
-  countTime: number = 1;
-  callEveryCount: (count: number)=>void = ()=>{};
-  callBeforeStart: (count: number)=>void = ()=>{};
-  callBeforeStop: (count: number)=>void = ()=>{};
-  callBeforeFinish: (count: number)=>void = ()=>{};
+  measurementTime: number = 1;
+  callEveryCount: ()=>void = ()=>{};
+  callBeforeStart: ()=>void = ()=>{};
+  callBeforeStop: ()=>void = ()=>{};
+  callBeforeFinish: ()=>void = ()=>{};
 
-  setCallbacks(callEveryCount: (count: number)=>void,  
-               callBeforeStart: (count: number)=>void, 
-               callBeforeStop: (count: number)=>void, 
-               callBeforeFinish: (count: number)=>void) {
+  setCallbacks(callEveryCount: ()=>void,  
+               callBeforeStart: ()=>void, 
+               callBeforeStop: ()=>void, 
+               callBeforeFinish: ()=>void) {
 
     this.callEveryCount = callEveryCount;
     this.callBeforeStart = callBeforeStart;
@@ -53,13 +53,13 @@ export class TimerLogic {
     this.callBeforeFinish = callBeforeFinish;
   }
 
-  set(countTime: number) {
-    if (this.isActive || 0 >= countTime) {
+  set(measurementTime: number) {
+    if (this.isActive || 0 >= measurementTime) {
       return;
     }
 
-    this.timeCounter = countTime;
-    this.countTime = countTime;
+    this.timeCounter = measurementTime;
+    this.measurementTime = measurementTime;
   }
 
   async start() {
@@ -67,7 +67,7 @@ export class TimerLogic {
     if (0 >= this.timeCounter || this.isActive) {
       return;
     }
-    this.callBeforeStart(this.timeCounter);
+    this.callBeforeStart();
 
     this.isActive = true;
     this.count();
@@ -77,7 +77,7 @@ export class TimerLogic {
     while(this.isActive) {
       DEBUG("[start] loop start", this.timeCounter);
       this.timeCounter -= 1000;
-      this.callEveryCount(this.timeCounter);
+      this.callEveryCount();
 
 
       await wait(1000);
@@ -95,11 +95,11 @@ export class TimerLogic {
     if (!this.isActive) {
       return;
     }
-    this.callBeforeStop(this.timeCounter);
+    this.callBeforeStop();
     this.isActive = false;
   }
 
   onFinish() {
-    this.callBeforeFinish(this.timeCounter);
+    this.callBeforeFinish();
   }
 }
