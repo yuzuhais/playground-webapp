@@ -4,7 +4,7 @@ import { Button, ButtonGroup } from '@chakra-ui/react'
 import { watchSizeOfDisplay, Breakpoints } from "../responsiveFlag";
 import { SetStateAction, useRef, useState } from "react";
 import { TimerComponent, TimerLogic } from "../timer"
-import { BackPanelStyle } from "../styles"
+import { BackPanelStyle, hoveredButtonStyle } from "../styles"
 
 var timer = new TimerLogic();
 
@@ -104,8 +104,8 @@ export default function Index() {
               </InputRightElement>
             </InputGroup>
             <HStack gap='2'>
-              <Button onClick={ start } isDisabled={ isStarted || isInitialState } height={['50px', '100px']} width={['100px', '200px']} fontSize={['24px', '48px']} ring="4px" ringColor="blue.200" ringOffset="3px" ringOffsetColor="blue.300">Start</Button>
-              <Button onClick={ stop } isDisabled={ isStopped || isInitialState } height={['50px', '100px']}  width={['100px', '200px']} fontSize={['24px', '48px']}>Stop</Button>
+              <Button onClick={ start } isDisabled={ isStarted || isInitialState } height={['50px', '100px']} width={['100px', '200px']} fontSize={['24px', '48px']} _hover={hoveredButtonStyle}>Start</Button>
+              <Button onClick={ stop } isDisabled={ isStopped || isInitialState } height={['50px', '100px']}  width={['100px', '200px']} fontSize={['24px', '48px']} _hover={hoveredButtonStyle}>Stop</Button>
             </HStack>
           </VStack>
           </Box>

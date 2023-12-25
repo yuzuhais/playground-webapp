@@ -8,3 +8,10 @@ export const BackPanelStyle = {
   border: "1px solid rgba(255, 255, 255, 0.3)",
   padding: "24px"
 }
+
+export const hoveredButtonStyle = { 
+    ring:"4px", 
+    ringColor:"blue.200", 
+    ringOffset:"3px", 
+    ringOffsetColor:"blue.300" 
+}
