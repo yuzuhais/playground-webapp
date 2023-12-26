@@ -7,6 +7,17 @@ import { SetStateAction, useEffect, useRef, useState } from "react";
 import { TimerComponent, TimerLogic } from "./timer"
 import { BackPanelStyle, hoveredButtonStyle } from "./styles"
 
+import { createTRPCProxyClient, httpLink, httpBatchLink } from '@trpc/client';
+import type { AppRouter } from '../../timer-app-server/src/notification/notification.router';
+
+const client = createTRPCProxyClient<AppRouter>({
+  links: [
+    httpLink({
+      url: '/api/v1/trpc',
+    }),
+  ],
+});
+
 var timer = new TimerLogic();
 
 export default function Home() {
@@ -74,11 +85,13 @@ export default function Home() {
     setRemainingTime(0);
     setInitialStateFlag(true);
   }
+
+  
   
   timer.setCallbacks(
     ()=>{ setRemainingTime(timer.timeCounter); }, 
-    ()=>{ fetch(`/api/v1/notify/time/${input}/start/${timer.timeCounter}/${timer.measurementTime}`, { method: 'POST' }); }, 
-    ()=>{ fetch(`/api/v1/notify/time/${input}/stop/${timer.timeCounter}/${timer.measurementTime}`, { method: 'POST' }); },
+    ()=>{ client.hello.query({ supervisorID: input, state: "start", remainingTime: timer.timeCounter.toString(), mesurementTime: timer.measurementTime.toString(),}) }, 
+    ()=>{ client.hello.query({ supervisorID: input, state: "stop", remainingTime: timer.timeCounter.toString(), mesurementTime: timer.measurementTime.toString(),}) },
     ()=>{ stop(); resetTimer(); }
   );
   
