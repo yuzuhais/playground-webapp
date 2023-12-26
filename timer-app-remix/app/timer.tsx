@@ -50,20 +50,20 @@ export class TimerLogic {
   timeCounter: number = 0;
   isActive: boolean = false;
   measurementTime: number = 1;
-  disposeEveryCount: ()=>void = ()=>{};
-  disposeBeforeStart: ()=>void = ()=>{};
-  disposeBeforeStop: ()=>void = ()=>{};
-  disposeBeforeFinish: ()=>void = ()=>{};
+  callEveryCount: ()=>void = ()=>{};
+  callBeforeStart: ()=>void = ()=>{};
+  callBeforeStop: ()=>void = ()=>{};
+  callBeforeFinish: ()=>void = ()=>{};
 
-  setCallbacks(disposeEveryCount: ()=>void,  
-               disposeBeforeStart: ()=>void, 
-               disposeBeforeStop: ()=>void, 
-               disposeBeforeFinish: ()=>void) {
+  setCallbacks(callEveryCount: ()=>void,  
+               callBeforeStart: ()=>void, 
+               callBeforeStop: ()=>void, 
+               callBeforeFinish: ()=>void) {
 
-    this.disposeEveryCount = disposeEveryCount;
-    this.disposeBeforeStart = disposeBeforeStart;
-    this.disposeBeforeStop = disposeBeforeStop;
-    this.disposeBeforeFinish = disposeBeforeFinish;
+    this.callEveryCount = callEveryCount;
+    this.callBeforeStart = callBeforeStart;
+    this.callBeforeStop = callBeforeStop;
+    this.callBeforeFinish = callBeforeFinish;
   }
 
   set(measurementTime: number) {
@@ -80,7 +80,7 @@ export class TimerLogic {
     if (0 >= this.timeCounter || this.isActive) {
       return;
     }
-    this.disposeBeforeStart();
+    this.callBeforeStart();
 
     this.isActive = true;
     this.count();
@@ -90,7 +90,7 @@ export class TimerLogic {
     while(this.isActive) {
       DEBUG("[start] loop start", this.timeCounter);
       this.timeCounter -= 1000;
-      this.disposeEveryCount();
+      this.callEveryCount();
 
 
       await wait(1000);
@@ -108,11 +108,11 @@ export class TimerLogic {
     if (!this.isActive) {
       return;
     }
-    this.disposeBeforeStop();
+    this.callBeforeStop();
     this.isActive = false;
   }
 
   onFinish() {
-    this.disposeBeforeFinish();
+    this.callBeforeFinish();
   }
 }

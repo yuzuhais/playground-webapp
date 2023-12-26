@@ -1,8 +1,9 @@
 import { Controller, Injectable, Param, Post, Req, Sse } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Observable, fromEvent, map } from 'rxjs';
+import { NotificationService } from './notification.service';
 
-class NotificationPayload {
+export class NotificationPayload {
   supervisorID: string;
   state: string;
   remainingTime: string;
@@ -16,14 +17,12 @@ class NotificationPayload {
 @Injectable()
 @Controller('/notify')
 export class NotificationController {
-   constructor(
-     private eventEmitter: EventEmitter2,
-   ) {}
+   constructor(private readonly notificationService: NotificationService) {}
 
   @Sse('time/:supervisorID')
   sse(@Param("supervisorID") supervisorID: string): Observable<MessageEvent> {
     //切断時にゾンビ化しないか未確認
-    return fromEvent(this.eventEmitter, supervisorID).pipe(
+    return fromEvent(this.notificationService.eventEmitter, supervisorID).pipe(
       map((data) => {
         return new MessageEvent("message", {data: data});
       }),
@@ -32,7 +31,7 @@ export class NotificationController {
 
   @Post('time/:supervisorID/:state/:remainingTime/:mesurementTime')
   emit(@Param("supervisorID") supervisorID: string, @Param("state") state: string, @Param("remainingTime") remainingTime: string, @Param("mesurementTime") mesurementTime: string) {
-    this.eventEmitter.emit(supervisorID, new NotificationPayload({ supervisorID: supervisorID, state: state, remainingTime: remainingTime, mesurementTime: mesurementTime}));
+    this.notificationService.eventEmitter.emit(supervisorID, new NotificationPayload({ supervisorID: supervisorID, state: state, remainingTime: remainingTime, mesurementTime: mesurementTime}));
     return {result: 'ok'};
   }
 }
