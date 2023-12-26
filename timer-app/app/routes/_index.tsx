@@ -58,6 +58,7 @@ export default function Index() {
   }
 
   const resetTimer = () => {
+    stop();
     setRemainingTime(0);
     setInitialStateFlag(true);
   }
