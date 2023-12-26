@@ -94,11 +94,11 @@ export default function Index() {
                step="1"
                ref={measurementTime}
               />
-              <InputRightElement width='4.5rem'>
-                { isInitialState &&  <Button onClick={setTimer}  size={ ["sm", "md"] }>
+              <InputRightElement width='5.5rem'>
+                { isInitialState &&  <Button width='4.5rem' onClick={setTimer}  size={ ["sm", "md"] }>
                   SET
                 </Button> }
-                { !isInitialState &&  <Button onClick={resetTimer}  mr="1"  size={ ["sm", "md"] }>
+                { !isInitialState &&  <Button width='4.5rem' onClick={resetTimer}  mr="1"  size={ ["sm", "md"] }>
                   RESET
                 </Button> }
               </InputRightElement>
