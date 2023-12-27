@@ -4,17 +4,16 @@ import { Observable, fromEvent, map } from 'rxjs';
 import { NotificationService } from './notification.service';
 
 export class NotificationPayload {
-  supervisorID: string;
-  state: string;
-  remainingTime: string;
-  mesurementTime: string;
+  supervisorID: string = "";
+  state: string = "";
+  remainingTime: string = "";
+  mesurementTime: string = "";
 
   constructor(init?: Partial<NotificationPayload>) {
     Object.assign(this, init);
   }
 }
 
-@Injectable()
 @Controller('/notify')
 export class NotificationController {
    constructor(private readonly notificationService: NotificationService) {}
