@@ -26,14 +26,20 @@ export function TimerComponent({ text, percentage, isLargeDisplay }: timerProps)
   
   if (!isLargeDisplay) {
 
-    return <Box style={circularBackpanel}><CircularProgressBar mainText={text} selectedValue={ percentage }
-      maxValue={100}
-      strokeWidth={60}
-      activeStrokeColor='#0f4fff'
-      labelFontSize={164}
-      valueFontSize={48}
-      withGradient
-      radius={160}/></Box>;
+    return <Box style={circularBackpanel}><CircularProgressBar mainText={text} selectedValue={percentage}
+    maxValue={100}
+    strokeWidth={60}
+    activeStrokeColor='#0f4fff'
+    labelFontSize={164}
+    valueFontSize={48}
+    withGradient
+    radius={160} 
+    label={''} 
+    inactiveStrokeColor={'#ddd'} 
+    anticlockwise={false} 
+    initialAngularDisplacement={0} 
+    backgroundColor={'#fff'} 
+    textColor={'#000'}/></Box>;
     }
 
     return <Box style={circularExtraLargeBackpanel}><CircularProgressBar mainText={text} selectedValue={ percentage }
@@ -43,7 +49,13 @@ export function TimerComponent({ text, percentage, isLargeDisplay }: timerProps)
       labelFontSize={164}
       valueFontSize={72}
       withGradient
-      radius={260}/></Box>;
+      radius={260}
+      label={''} 
+      inactiveStrokeColor={'#ddd'} 
+      anticlockwise={false} 
+      initialAngularDisplacement={0} 
+      backgroundColor={'#fff'} 
+      textColor={'#000'}/></Box>;
 }
 
 export class TimerLogic {

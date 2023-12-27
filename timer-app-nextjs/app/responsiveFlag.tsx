@@ -10,7 +10,7 @@ export const Breakpoints = {
   xxl: 4
 }
 
-export const watchSizeOfDisplay = () => {
+export const WatchSizeOfDisplay = () => {
   const [displaySize, setDisplaySize] = useState(Breakpoints.sm);
 
   const resizeCallback = () => {
@@ -47,26 +47,26 @@ export const watchSizeOfDisplay = () => {
 };
 
 export const useOnSmallDisplay = () => {
-  const flag = Breakpoints.sm == watchSizeOfDisplay();
+  const flag = Breakpoints.sm == WatchSizeOfDisplay();
   return flag;
 }
 
 export const useOnMediumDisplay = () => {
-  const flag = Breakpoints.md == watchSizeOfDisplay();
+  const flag = Breakpoints.md == WatchSizeOfDisplay();
   return flag;
 }
 
 export const useOnLargeDisplay = () => {
-  const flag = Breakpoints.lg == watchSizeOfDisplay();
+  const flag = Breakpoints.lg == WatchSizeOfDisplay();
   return flag;
 }
 
 export const useOnExtraLargeDisplay = () => {
-  const flag = Breakpoints.xl == watchSizeOfDisplay();
+  const flag = Breakpoints.xl == WatchSizeOfDisplay();
   return flag;
 }
 
 export const useOnExtraExtraLargeDisplay = () => {
-  const flag = Breakpoints.xxl == watchSizeOfDisplay();
+  const flag = Breakpoints.xxl == WatchSizeOfDisplay();
   return flag;
 }

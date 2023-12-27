@@ -2,7 +2,7 @@
 import { Box, Heading, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Flex, Grid, GridItem, Stack, VStack, Input, InputGroup, InputRightElement, HStack, FormControl, FormLabel, FormHelperText, FormErrorMessage } from "@chakra-ui/react";
 import { Button, ButtonGroup } from '@chakra-ui/react'
 import { ChakraProvider } from '@chakra-ui/react'
-import { watchSizeOfDisplay, Breakpoints } from "./responsiveFlag";
+import { WatchSizeOfDisplay, Breakpoints } from "./responsiveFlag";
 import { SetStateAction, useEffect, useRef, useState } from "react";
 import { TimerComponent, TimerLogic } from "./timer"
 import { BackPanelStyle, hoveredButtonStyle } from "./styles"
@@ -21,7 +21,7 @@ const client = createTRPCProxyClient<AppRouter>({
 var timer = new TimerLogic();
 
 export default function Home() {
-  const isLargeDisplay = Breakpoints.lg < watchSizeOfDisplay();
+  const isLargeDisplay = Breakpoints.lg < WatchSizeOfDisplay();
   const measurementTime = useRef<HTMLInputElement>(null);
   const supervisorID = useRef<HTMLInputElement>(null);
   const [isInitialState, setInitialStateFlag] = useState(true);

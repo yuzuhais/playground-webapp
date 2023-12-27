@@ -2,7 +2,7 @@
 import { Box, Heading, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Flex, Grid, GridItem, Stack, VStack, Input, InputGroup, InputRightElement, HStack, FormErrorMessage } from "@chakra-ui/react";
 import { Button, ButtonGroup } from '@chakra-ui/react'
 import { ChakraProvider } from '@chakra-ui/react'
-import { watchSizeOfDisplay, Breakpoints } from "../responsiveFlag";
+import { WatchSizeOfDisplay, Breakpoints } from "../responsiveFlag";
 import { RefObject, useEffect, useRef, useState, Dispatch, SetStateAction, MutableRefObject } from "react";
 import { TimerComponent, TimerLogic } from "../timer"
 import { BackPanelStyle } from "../styles"
@@ -17,8 +17,8 @@ interface Message {
 }
 
 
-const clientDisplay = (es: MutableRefObject<EventSource | null>) => {
-  const isLargeDisplay = Breakpoints.lg < watchSizeOfDisplay();
+const ClientDisplay = (es: MutableRefObject<EventSource | null>) => {
+  const isLargeDisplay = Breakpoints.lg < WatchSizeOfDisplay();
   const measurementTime = useRef<HTMLInputElement>(null);
   const [isInitialState, setInitialStateFlag] = useState(true);
   const [isStarted, setStartedFlag] = useState(false);
@@ -147,5 +147,5 @@ export default function Index() {
   
   const es = useRef<EventSource | null>(null);
 
-  return clientDisplay(es);
+  return ClientDisplay(es);
 }
