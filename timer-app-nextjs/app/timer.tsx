@@ -89,11 +89,11 @@ export class TimerLogic {
   async count() {
     while(this.isActive) {
       DEBUG("[start] loop start", this.timeCounter);
-      this.timeCounter -= 1000;
+      this.timeCounter -= 100;
       this.callEveryCount();
 
 
-      await wait(1000);
+      await wait(100);
 
       if (0 >= this.timeCounter) {
         this.onFinish();
