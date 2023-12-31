@@ -43,8 +43,8 @@ export default function Home() {
       console.log("available id");
       setErrorFlag(false);
       setIdAvailabilityFlag(true);
-      setInput(id);
     }
+    setInput(id);
   }
 
   const start = () => {
