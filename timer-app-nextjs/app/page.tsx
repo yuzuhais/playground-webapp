@@ -33,17 +33,6 @@ export default function Home() {
   const [isError, setErrorFlag] = useState(false);
   const [hasAvailableID, setIdAvailabilityFlag] = useState(false);
 
-  useEffect(() => {
-    if (measurementTime.current) measurementTime.current.value = "";
-    setInitialStateFlag(true);
-    setStartedFlag(false);
-    setStoppedFlag(true);
-    setRemainingTime(0);
-    setInput('');
-    setErrorFlag(false);
-    setIdAvailabilityFlag(false);
-  }, [])
-
   const handleInputChange = (e: { target: { value: SetStateAction<string>; }; }) => {
     const id = e.target.value.toString().trim();
     if ("" == id) {
