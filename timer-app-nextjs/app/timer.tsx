@@ -79,9 +79,7 @@ export class TimerLogic {
   }
 
   set(measurementTime: number) {
-    if (this.isActive || 0 >= measurementTime) {
-      return;
-    }
+    console.assert(!this.isActive && 0 < measurementTime, "Invalid state transition");
 
     this.timeCounter = measurementTime;
     this.measurementTime = measurementTime;
@@ -89,9 +87,7 @@ export class TimerLogic {
 
   async start() {
     DEBUG("start on logic");
-    if (0 >= this.timeCounter || this.isActive) {
-      return;
-    }
+    console.assert(0 < this.timeCounter && !this.isActive, "Invalid state transition");
     this.callBeforeStart();
 
     this.isActive = true;
@@ -117,9 +113,8 @@ export class TimerLogic {
   }
 
   stop() {
-    if (!this.isActive) {
-      return;
-    }
+    console.assert(this.isActive, "Invalid state transition");
+    
     this.callBeforeStop();
     this.isActive = false;
   }
